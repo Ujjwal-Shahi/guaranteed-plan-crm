@@ -1,6 +1,4 @@
 """Seed script to create demo users, ASM mappings and a sample deal."""
-import sys
-sys.path.insert(0, "/home/user/guaranteed-plan-crm/backend")
 
 from database import SessionLocal, engine
 import models
