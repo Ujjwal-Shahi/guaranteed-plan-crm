@@ -4,7 +4,7 @@ from typing import List
 from datetime import datetime
 import models, schemas, auth
 from database import get_db
-import os
+import os, base64
 
 router = APIRouter(prefix="/api/deals/{deal_id}/photos", tags=["photos"])
 

@@ -5,6 +5,7 @@ sys.path.insert(0, "/home/user/guaranteed-plan-crm/backend")
 from database import SessionLocal, engine
 import models
 from auth import hash_password
+from datetime import datetime
 
 models.Base.metadata.create_all(bind=engine)
 

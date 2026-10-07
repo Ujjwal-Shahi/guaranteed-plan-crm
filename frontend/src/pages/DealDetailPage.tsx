@@ -21,10 +21,12 @@ export default function DealDetailPage() {
   const [activeTab, setActiveTab] = useState<'overview' | 'visit' | 'photos' | 'negotiate' | 'activity'>('overview');
   const [loading, setLoading] = useState(true);
 
+  // For manager assignment
   const [asmList, setAsmList] = useState<User[]>([]);
   const [assignAsmId, setAssignAsmId] = useState('');
   const [assigning, setAssigning] = useState(false);
 
+  // Visit scheduling
   const [scheduleSlot, setScheduleSlot] = useState('');
   const [scheduling, setScheduling] = useState(false);
 
@@ -100,6 +102,7 @@ export default function DealDetailPage() {
 
   return (
     <div>
+      {/* Header */}
       <div style={{ background: '#fff', borderRadius: 10, padding: '20px 24px', marginBottom: 16, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
           <div>
@@ -126,6 +129,7 @@ export default function DealDetailPage() {
           </button>
         </div>
 
+        {/* SLA warnings */}
         {activeTimers.length > 0 && (
           <div style={{ marginTop: 12, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             {activeTimers.map((t) => {
@@ -144,6 +148,7 @@ export default function DealDetailPage() {
         )}
       </div>
 
+      {/* Tabs */}
       <div style={{ display: 'flex', gap: 0, marginBottom: 16, background: '#fff', borderRadius: 10, padding: 4, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
         {TABS.map((tab) => (
           <button key={tab.id} onClick={() => setActiveTab(tab.id as typeof activeTab)}
@@ -157,8 +162,10 @@ export default function DealDetailPage() {
         ))}
       </div>
 
+      {/* Overview Tab */}
       {activeTab === 'overview' && (
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          {/* Team */}
           <div style={{ background: '#fff', borderRadius: 10, padding: 20, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
             <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 12, color: '#333' }}>Team</h3>
             {[
@@ -173,6 +180,7 @@ export default function DealDetailPage() {
             ))}
           </div>
 
+          {/* Visit slots */}
           <div style={{ background: '#fff', borderRadius: 10, padding: 20, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
             <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 12, color: '#333' }}>Visit Slots</h3>
             {deal.visit_slots && deal.visit_slots.length > 0 ? (
@@ -186,6 +194,7 @@ export default function DealDetailPage() {
             )}
           </div>
 
+          {/* Notes */}
           {deal.agent1_notes && (
             <div style={{ background: '#fff', borderRadius: 10, padding: 20, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', gridColumn: '1/-1' }}>
               <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 8, color: '#333' }}>Agent 1 Notes</h3>
@@ -193,6 +202,7 @@ export default function DealDetailPage() {
             </div>
           )}
 
+          {/* ASM Visit Summary */}
           {latestVisit && latestVisit.submitted_at && (
             <div style={{ background: '#fff', borderRadius: 10, padding: 20, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', gridColumn: '1/-1' }}>
               <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 12, color: '#333' }}>ASM Visit Summary</h3>
@@ -215,6 +225,7 @@ export default function DealDetailPage() {
             </div>
           )}
 
+          {/* Assign ASM (Manager) */}
           {canAssign && (
             <div style={{ background: '#fff', borderRadius: 10, padding: 20, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', gridColumn: '1/-1' }}>
               <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 12, color: '#333' }}>Assign ASM</h3>
@@ -236,6 +247,7 @@ export default function DealDetailPage() {
             </div>
           )}
 
+          {/* Schedule Visit (ASM) */}
           {canSchedule && !latestVisit && (
             <div style={{ background: '#fff', borderRadius: 10, padding: 20, boxShadow: '0 1px 4px rgba(0,0,0,0.08)', gridColumn: '1/-1' }}>
               <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 12, color: '#333' }}>Schedule Visit</h3>
@@ -256,6 +268,7 @@ export default function DealDetailPage() {
         </div>
       )}
 
+      {/* Visit Tab */}
       {activeTab === 'visit' && (
         <div>
           {canSubmitForm && latestVisit ? (
@@ -275,14 +288,17 @@ export default function DealDetailPage() {
         </div>
       )}
 
+      {/* Photos Tab */}
       {activeTab === 'photos' && (
         <PhotosPanel deal={deal} canUpload={canSchedule || (user?.role === 'asm' && deal.asm_id === user.id)} onUpdated={reload} />
       )}
 
+      {/* Negotiation Tab */}
       {activeTab === 'negotiate' && (
         <NegotiationPanel deal={deal} visit={latestVisit || null} onUpdated={reload} />
       )}
 
+      {/* Activity Log */}
       {activeTab === 'activity' && (
         <div style={{ background: '#fff', borderRadius: 10, padding: 20, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
           <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 16, color: '#333' }}>Activity Log</h3>

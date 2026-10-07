@@ -18,8 +18,8 @@ const SLOT_LABELS: Record<string, string> = {
   bedroom_2: '🛏️ Bedroom 2',
   bedroom_3: '🛏️ Bedroom 3',
   bedroom_4: '🛏️ Bedroom 4',
-  bathroom_1: '🛿 Bathroom 1',
-  bathroom_2: '🛿 Bathroom 2',
+  bathroom_1: '🚿 Bathroom 1',
+  bathroom_2: '🚿 Bathroom 2',
   balcony: '🌅 Balcony / View',
   society_amenity: '🏊 Society Amenity',
 };
