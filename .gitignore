@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.db
+*.db-journal
+.env
+.env.local
+node_modules/
+dist/
+build/
+.DS_Store
+/data/
+/tmp/gp_photos/
+frontend/node_modules/
