@@ -52,6 +52,7 @@ class Deal(Base):
     asm_id = Column(String, ForeignKey("users.id"))
     agent2_id = Column(String, ForeignKey("users.id"))
     duplicate_of = Column(String, ForeignKey("deals.id"), nullable=True)
+    expected_price_bucket = Column(String, nullable=True)  # below_50l, 50l_1cr, 1cr_2cr, 2cr_3cr, 3cr_4cr, above_4cr
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
 

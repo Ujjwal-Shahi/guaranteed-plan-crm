@@ -39,6 +39,7 @@ export interface Deal {
   asm_id: string | null;
   agent2_id: string | null;
   duplicate_of: string | null;
+  expected_price_bucket: string | null;
   created_at: string;
   updated_at: string;
   agent1?: User;

@@ -3,6 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { dealsApi } from '../api';
 
 const BHK_OPTIONS = ['1BHK', '2BHK', '3BHK', '4BHK+'];
+const PRICE_BUCKET_OPTIONS = [
+  { value: 'below_50l', label: 'Below ₹50L' },
+  { value: '50l_1cr', label: '₹50L – ₹1Cr' },
+  { value: '1cr_2cr', label: '₹1Cr – ₹2Cr' },
+  { value: '2cr_3cr', label: '₹2Cr – ₹3Cr' },
+  { value: '3cr_4cr', label: '₹3Cr – ₹4Cr' },
+  { value: 'above_4cr', label: 'Above ₹4Cr' },
+];
 const OCCUPANCY_OPTIONS = [
   { value: 'self', label: 'Owner Occupied' },
   { value: 'tenant', label: 'Tenanted' },
@@ -29,6 +37,7 @@ export default function NewDealPage() {
   const [form, setForm] = useState({
     seller_name: '', seller_phone: '', society: '', locality: '', city: '',
     tower: '', flat_number: '', bhk: '2BHK', carpet_area: '', occupancy: 'self',
+    expected_price_bucket: '',
     agent1_notes: '', visit_slots: ['', '', ''],
   });
   const [error, setError] = useState('');
@@ -104,6 +113,25 @@ export default function NewDealPage() {
             </select>
           </Field>
         </div>
+        <Field label="Seller's Expected Price Range">
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 4 }}>
+            {PRICE_BUCKET_OPTIONS.map((o) => (
+              <label key={o.value} style={{
+                display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: 14,
+                padding: '6px 14px', border: '1px solid', borderRadius: 20,
+                borderColor: form.expected_price_bucket === o.value ? '#1a237e' : '#ddd',
+                background: form.expected_price_bucket === o.value ? '#e8eaf6' : '#fff',
+                color: form.expected_price_bucket === o.value ? '#1a237e' : '#555',
+              }}>
+                <input type="radio" name="expected_price_bucket" value={o.value}
+                  checked={form.expected_price_bucket === o.value}
+                  onChange={() => set('expected_price_bucket', o.value)}
+                  style={{ display: 'none' }} />
+                {o.label}
+              </label>
+            ))}
+          </div>
+        </Field>
 
         <h3 style={{ fontSize: 14, fontWeight: 700, color: '#444', marginBottom: 16, marginTop: 8, textTransform: 'uppercase', letterSpacing: 0.5 }}>Preferred Visit Slots (up to 3)</h3>
         {[0, 1, 2].map((i) => (
