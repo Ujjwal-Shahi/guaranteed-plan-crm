@@ -8,8 +8,5 @@ COPY . .
 
 RUN mkdir -p /app/data/photos
 
-COPY start.sh /app/start.sh
-RUN chmod +x /app/start.sh
-
 EXPOSE 8080
-CMD ["/app/start.sh"]
+CMD ["/bin/sh", "-c", "mkdir -p /tmp/photos; (python seed.py && python seed_deals.py) & exec uvicorn main:app --host 0.0.0.0 --port 8080"]
