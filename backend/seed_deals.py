@@ -80,7 +80,7 @@ def submit_form(deal, visit, asm, price, confidence="high", outcome="suitable"):
     form = {
         "condition_overall_rating": 4,
         "condition_issues": ["paint"],
-        "condition_refurb_bucket": "under_50k",
+        "condition_refurb_bucket": "under_5l",
         "furnishing_status": "semi",
         "furnishing_items_staying": ["wardrobes", "fans"],
         "seller_reason": "Upgrading to larger home",

@@ -170,9 +170,11 @@ export default function ASMVisitForm({ deal, visit, onSubmitted }: { deal: Deal;
         </Field>
         <Field label="Refurb Cost Estimate">
           {radioGroup('condition_refurb_bucket', [
-            { value: 'under_50k', label: 'Under ₹50K' },
-            { value: '50k_2l', label: '₹50K – ₹2L' },
-            { value: 'over_2l', label: 'Over ₹2L' },
+            { value: 'under_5l', label: 'Under ₹5L' },
+            { value: '5l_10l', label: '₹5L – ₹10L' },
+            { value: '10l_15l', label: '₹10L – ₹15L' },
+            { value: '15l_20l', label: '₹15L – ₹20L' },
+            { value: 'over_20l', label: 'Over ₹20L' },
           ])}
         </Field>
       </Section>
