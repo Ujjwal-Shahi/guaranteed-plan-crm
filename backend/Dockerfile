@@ -8,5 +8,8 @@ COPY . .
 
 RUN mkdir -p /app/data/photos
 
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
 EXPOSE 8000
-CMD ["sh", "-c", "mkdir -p /tmp/photos && export DATABASE_URL=${DATABASE_URL:-sqlite:////tmp/guaranteed_plan.db} && export UPLOAD_DIR=${UPLOAD_DIR:-/tmp/photos} && (python seed.py && python seed_deals.py) & uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}"]
+CMD ["/app/start.sh"]
