@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: gp-crm-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:///./data/guaranteed_plan.db
+      - key: UPLOAD_DIR
+        value: ./data/photos
+      - key: PORT
+        value: 8000
+    disk:
+      name: crm-data
+      mountPath: /app/data
+      sizeGB: 1
+    healthCheckPath: /api/health
+
+  - type: web
+    name: gp-crm-frontend
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          name: gp-crm-backend
+          type: web
+          property: host
+          format: https://{value}
