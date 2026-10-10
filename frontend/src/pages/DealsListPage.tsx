@@ -61,13 +61,13 @@ export default function DealsListPage() {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: '#1a237e' }}>
+        <h1 style={{ fontSize: 22, fontWeight: 700, color: '#003335' }}>
           {user?.role === 'asm' ? 'My Assigned Deals' : user?.role === 'agent1' ? 'My Deals' : 'All Deals'}
         </h1>
         {(user?.role === 'agent1' || user?.role === 'admin') && (
           <button
             onClick={() => navigate('/deals/new')}
-            style={{ padding: '8px 20px', background: '#1a237e', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600 }}
+            style={{ padding: '8px 20px', background: '#FE7541', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600 }}
           >
             + New Deal
           </button>
@@ -87,8 +87,8 @@ export default function DealsListPage() {
               onClick={() => setStatusFilter(opt.value)}
               style={{
                 padding: '6px 14px', border: '1px solid', borderRadius: 20, fontSize: 13, cursor: 'pointer',
-                borderColor: statusFilter === opt.value ? '#1a237e' : '#ddd',
-                background: statusFilter === opt.value ? '#1a237e' : '#fff',
+                borderColor: statusFilter === opt.value ? '#003335' : '#ddd',
+                background: statusFilter === opt.value ? '#003335' : '#fff',
                 color: statusFilter === opt.value ? '#fff' : '#333',
               }}
             >

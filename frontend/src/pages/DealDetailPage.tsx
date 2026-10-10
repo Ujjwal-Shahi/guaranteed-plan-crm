@@ -107,7 +107,7 @@ export default function DealDetailPage() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
           <div>
             <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-              <h1 style={{ fontSize: 20, fontWeight: 700, color: '#1a237e' }}>{deal.seller_name}</h1>
+              <h1 style={{ fontSize: 20, fontWeight: 700, color: '#003335' }}>{deal.seller_name}</h1>
               <StatusBadge status={deal.status} />
               {deal.duplicate_of && (
                 <span style={{ fontSize: 12, background: '#fff3e0', color: '#e65100', padding: '2px 8px', borderRadius: 4, fontWeight: 600 }}>
@@ -154,7 +154,7 @@ export default function DealDetailPage() {
           <button key={tab.id} onClick={() => setActiveTab(tab.id as typeof activeTab)}
             style={{
               padding: '8px 20px', border: 'none', borderRadius: 8, cursor: 'pointer', fontSize: 14, fontWeight: 500,
-              background: activeTab === tab.id ? '#1a237e' : 'transparent',
+              background: activeTab === tab.id ? '#003335' : 'transparent',
               color: activeTab === tab.id ? '#fff' : '#555',
             }}>
             {tab.label}
@@ -209,7 +209,7 @@ export default function DealDetailPage() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
                 <div>
                   <div style={{ fontSize: 12, color: '#999' }}>ASM Price</div>
-                  <div style={{ fontSize: 18, fontWeight: 700, color: '#1a237e' }}>₹{latestVisit.asm_price?.toLocaleString()}</div>
+                  <div style={{ fontSize: 18, fontWeight: 700, color: '#003335' }}>₹{latestVisit.asm_price?.toLocaleString()}</div>
                 </div>
                 <div>
                   <div style={{ fontSize: 12, color: '#999' }}>Confidence</div>
@@ -239,7 +239,7 @@ export default function DealDetailPage() {
                 </select>
                 <button
                   onClick={handleAssignAsm} disabled={!assignAsmId || assigning}
-                  style={{ padding: '8px 20px', background: '#1a237e', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600, opacity: assigning ? 0.7 : 1 }}
+                  style={{ padding: '8px 20px', background: '#FE7541', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600, opacity: assigning ? 0.7 : 1 }}
                 >
                   {assigning ? 'Assigning…' : 'Assign'}
                 </button>
@@ -258,7 +258,7 @@ export default function DealDetailPage() {
                 />
                 <button
                   onClick={handleScheduleVisit} disabled={!scheduleSlot || scheduling}
-                  style={{ padding: '8px 20px', background: '#1a237e', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600, opacity: scheduling ? 0.7 : 1 }}
+                  style={{ padding: '8px 20px', background: '#FE7541', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600, opacity: scheduling ? 0.7 : 1 }}
                 >
                   {scheduling ? 'Scheduling…' : 'Confirm Slot'}
                 </button>
@@ -309,7 +309,7 @@ export default function DealDetailPage() {
               {[...events].reverse().map((ev, i) => (
                 <div key={ev.id} style={{ display: 'flex', gap: 16, paddingBottom: i < events.length - 1 ? 16 : 0 }}>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#1a237e', marginTop: 4, flexShrink: 0 }} />
+                    <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#003335', marginTop: 4, flexShrink: 0 }} />
                     {i < events.length - 1 && <div style={{ width: 1, flex: 1, background: '#e0e0e0', marginTop: 4 }} />}
                   </div>
                   <div style={{ flex: 1 }}>

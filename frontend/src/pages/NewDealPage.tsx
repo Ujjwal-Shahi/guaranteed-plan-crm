@@ -69,7 +69,7 @@ export default function NewDealPage() {
 
   return (
     <div style={{ maxWidth: 680 }}>
-      <h1 style={{ fontSize: 22, fontWeight: 700, color: '#1a237e', marginBottom: 24 }}>New Deal</h1>
+      <h1 style={{ fontSize: 22, fontWeight: 700, color: '#003335', marginBottom: 24 }}>New Deal</h1>
 
       <form onSubmit={handleSubmit} style={{ background: '#fff', borderRadius: 10, padding: 28, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
         <h3 style={{ fontSize: 14, fontWeight: 700, color: '#444', marginBottom: 16, textTransform: 'uppercase', letterSpacing: 0.5 }}>Seller Details</h3>
@@ -119,9 +119,9 @@ export default function NewDealPage() {
               <label key={o.value} style={{
                 display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: 14,
                 padding: '6px 14px', border: '1px solid', borderRadius: 20,
-                borderColor: form.expected_price_bucket === o.value ? '#1a237e' : '#ddd',
-                background: form.expected_price_bucket === o.value ? '#e8eaf6' : '#fff',
-                color: form.expected_price_bucket === o.value ? '#1a237e' : '#555',
+                borderColor: form.expected_price_bucket === o.value ? '#003335' : '#ddd',
+                background: form.expected_price_bucket === o.value ? '#e0f5f6' : '#fff',
+                color: form.expected_price_bucket === o.value ? '#003335' : '#555',
               }}>
                 <input type="radio" name="expected_price_bucket" value={o.value}
                   checked={form.expected_price_bucket === o.value}
@@ -156,7 +156,7 @@ export default function NewDealPage() {
         <div style={{ display: 'flex', gap: 12, marginTop: 8 }}>
           <button
             type="submit" disabled={loading}
-            style={{ padding: '10px 28px', background: '#1a237e', color: '#fff', border: 'none', borderRadius: 6, fontSize: 15, fontWeight: 600, cursor: 'pointer', opacity: loading ? 0.7 : 1 }}
+            style={{ padding: '10px 28px', background: '#FE7541', color: '#fff', border: 'none', borderRadius: 6, fontSize: 15, fontWeight: 600, cursor: 'pointer', opacity: loading ? 0.7 : 1 }}
           >
             {loading ? 'Creating…' : 'Create Deal'}
           </button>
