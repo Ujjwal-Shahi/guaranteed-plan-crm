@@ -105,9 +105,9 @@ export default function PhotosPanel({ deal, canUpload, onUpdated }: { deal: Deal
                     disabled={isUploading}
                     style={{
                       width: '100%', padding: '7px 0', border: '1px solid', borderRadius: 6, cursor: 'pointer', fontSize: 13,
-                      borderColor: photo?.gcs_path ? '#a5d6a7' : '#1a237e',
-                      background: photo?.gcs_path ? '#f1f8e9' : '#e8eaf6',
-                      color: photo?.gcs_path ? '#2e7d32' : '#1a237e',
+                      borderColor: photo?.gcs_path ? '#a5d6a7' : '#003335',
+                      background: photo?.gcs_path ? '#f1f8e9' : '#e0f5f6',
+                      color: photo?.gcs_path ? '#2e7d32' : '#003335',
                       opacity: isUploading ? 0.7 : 1,
                     }}
                   >

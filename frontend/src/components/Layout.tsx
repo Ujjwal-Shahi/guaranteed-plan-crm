@@ -41,10 +41,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <header style={{
-        background: '#1a237e', color: '#fff', padding: '0 20px',
+        background: '#003335', color: '#fff', padding: '0 20px',
         display: 'flex', alignItems: 'center', gap: 24, height: 56, position: 'sticky', top: 0, zIndex: 100,
       }}>
-        <span style={{ fontWeight: 700, fontSize: 16, letterSpacing: 0.5 }}>GP CRM</span>
+        <span style={{ fontWeight: 700, fontSize: 16, letterSpacing: 0.5 }}>The Pause CRM</span>
         <nav style={{ display: 'flex', gap: 4, flex: 1 }}>
           {navItems.map((item) => (
             <Link
@@ -89,7 +89,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             }}>
               <div style={{ padding: '12px 16px', borderBottom: '1px solid #eee', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <strong>Notifications</strong>
-                <button onClick={markAllRead} style={{ fontSize: 12, color: '#1a237e', background: 'none', border: 'none', cursor: 'pointer' }}>Mark all read</button>
+                <button onClick={markAllRead} style={{ fontSize: 12, color: '#003335', background: 'none', border: 'none', cursor: 'pointer' }}>Mark all read</button>
               </div>
               {notifications.length === 0 ? (
                 <div style={{ padding: 20, textAlign: 'center', color: '#999' }}>No new notifications</div>
@@ -101,7 +101,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       if (n.deal_id) navigate(`/deals/${n.deal_id}`);
                       setShowNotifs(false);
                     }}
-                    style={{ padding: '10px 16px', borderBottom: '1px solid #f5f5f5', cursor: 'pointer', background: n.is_read ? '#fff' : '#f3f4ff' }}
+                    style={{ padding: '10px 16px', borderBottom: '1px solid #f5f5f5', cursor: 'pointer', background: n.is_read ? '#fff' : '#e0f5f6' }}
                   >
                     <div style={{ fontSize: 13 }}>{n.message}</div>
                     <div style={{ fontSize: 11, color: '#999', marginTop: 2 }}>{new Date(n.created_at).toLocaleString()}</div>

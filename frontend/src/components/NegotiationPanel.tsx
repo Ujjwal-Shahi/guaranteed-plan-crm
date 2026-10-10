@@ -116,7 +116,7 @@ export default function NegotiationPanel({ deal, visit, onUpdated }: { deal: Dea
             {offers.map((o) => (
               <div key={o.id} style={{ padding: 12, background: o.offer_type === 'offer' ? '#e8eaf6' : '#fff3e0', borderRadius: 8 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: o.offer_type === 'offer' ? '#1a237e' : '#e65100' }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: o.offer_type === 'offer' ? '#003335' : '#e65100' }}>
                     {o.offer_type === 'offer' ? '📤 Our Offer' : '📥 Counter'}
                   </span>
                   <span style={{ fontSize: 17, fontWeight: 700 }}>₹{o.amount.toLocaleString()}</span>
@@ -134,8 +134,8 @@ export default function NegotiationPanel({ deal, visit, onUpdated }: { deal: Dea
               {['offer', 'counter'].map((t) => (
                 <button key={t} type="button" onClick={() => setOfferType(t as 'offer' | 'counter')}
                   style={{ flex: 1, padding: '7px 0', border: '1px solid', borderRadius: 6, cursor: 'pointer', fontSize: 13, fontWeight: 600,
-                    borderColor: offerType === t ? '#1a237e' : '#ddd',
-                    background: offerType === t ? '#1a237e' : '#fff',
+                    borderColor: offerType === t ? '#003335' : '#ddd',
+                    background: offerType === t ? '#003335' : '#fff',
                     color: offerType === t ? '#fff' : '#555',
                   }}>
                   {t === 'offer' ? 'Our Offer' : 'Counter Offer'}
@@ -147,7 +147,7 @@ export default function NegotiationPanel({ deal, visit, onUpdated }: { deal: Dea
             <input style={{ width: '100%', padding: '8px 12px', border: '1px solid #ddd', borderRadius: 6, fontSize: 14, marginBottom: 8, boxSizing: 'border-box' }}
               placeholder="Note (optional)" value={note} onChange={(e) => setNote(e.target.value)} />
             <button type="submit" disabled={submitting}
-              style={{ width: '100%', padding: '8px 0', background: '#1a237e', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600, cursor: 'pointer', opacity: submitting ? 0.7 : 1 }}>
+              style={{ width: '100%', padding: '8px 0', background: '#FE7541', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600, cursor: 'pointer', opacity: submitting ? 0.7 : 1 }}>
               {submitting ? 'Logging…' : 'Log Offer'}
             </button>
           </form>
@@ -166,8 +166,8 @@ export default function NegotiationPanel({ deal, visit, onUpdated }: { deal: Dea
             ].map((o) => (
               <button key={o.value} onClick={() => setOutcome(o.value)}
                 style={{ flex: 1, padding: '8px 0', border: '1px solid', borderRadius: 6, cursor: 'pointer', fontSize: 13, fontWeight: 600,
-                  borderColor: outcome === o.value ? '#1a237e' : '#ddd',
-                  background: outcome === o.value ? '#1a237e' : '#fff',
+                  borderColor: outcome === o.value ? '#003335' : '#ddd',
+                  background: outcome === o.value ? '#003335' : '#fff',
                   color: outcome === o.value ? '#fff' : '#555',
                 }}>
                 {o.label}
@@ -188,7 +188,7 @@ export default function NegotiationPanel({ deal, visit, onUpdated }: { deal: Dea
           )}
           {outcome && (
             <button onClick={handleOutcome} disabled={settingOutcome}
-              style={{ width: '100%', padding: '9px 0', background: '#1a237e', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600, cursor: 'pointer', opacity: settingOutcome ? 0.7 : 1 }}>
+              style={{ width: '100%', padding: '9px 0', background: '#FE7541', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600, cursor: 'pointer', opacity: settingOutcome ? 0.7 : 1 }}>
               {settingOutcome ? 'Saving…' : 'Confirm Outcome'}
             </button>
           )}

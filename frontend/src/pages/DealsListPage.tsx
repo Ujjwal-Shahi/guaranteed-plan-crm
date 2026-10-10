@@ -18,12 +18,27 @@ const STATUS_OPTIONS: { value: string; label: string }[] = [
   { value: 'closed_lost', label: 'Closed: Lost' },
 ];
 
+const PRICE_BUCKET_LABELS: Record<string, string> = {
+  below_50l: 'Below ₹50L',
+  '50l_1cr': '₹50L–₹1Cr',
+  '1cr_2cr': '₹1Cr–₹2Cr',
+  '2cr_3cr': '₹2Cr–₹3Cr',
+  '3cr_4cr': '₹3Cr–₹4Cr',
+  above_4cr: 'Above ₹4Cr',
+};
+
+const PRICE_FILTER_OPTIONS = [
+  { value: '', label: 'Any Price' },
+  ...Object.entries(PRICE_BUCKET_LABELS).map(([value, label]) => ({ value, label })),
+];
+
 export default function DealsListPage() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [deals, setDeals] = useState<Deal[]>([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('');
+  const [priceFilter, setPriceFilter] = useState('');
   const [search, setSearch] = useState('');
 
   useEffect(() => {
@@ -34,6 +49,7 @@ export default function DealsListPage() {
   }, [statusFilter]);
 
   const filtered = deals.filter((d) => {
+    if (priceFilter && d.expected_price_bucket !== priceFilter) return false;
     if (!search) return true;
     const q = search.toLowerCase();
     return d.seller_name.toLowerCase().includes(q) ||
@@ -45,13 +61,13 @@ export default function DealsListPage() {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: '#1a237e' }}>
+        <h1 style={{ fontSize: 22, fontWeight: 700, color: '#003335' }}>
           {user?.role === 'asm' ? 'My Assigned Deals' : user?.role === 'agent1' ? 'My Deals' : 'All Deals'}
         </h1>
         {(user?.role === 'agent1' || user?.role === 'admin') && (
           <button
             onClick={() => navigate('/deals/new')}
-            style={{ padding: '8px 20px', background: '#1a237e', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600 }}
+            style={{ padding: '8px 20px', background: '#FE7541', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600 }}
           >
             + New Deal
           </button>
@@ -71,9 +87,25 @@ export default function DealsListPage() {
               onClick={() => setStatusFilter(opt.value)}
               style={{
                 padding: '6px 14px', border: '1px solid', borderRadius: 20, fontSize: 13, cursor: 'pointer',
-                borderColor: statusFilter === opt.value ? '#1a237e' : '#ddd',
-                background: statusFilter === opt.value ? '#1a237e' : '#fff',
+                borderColor: statusFilter === opt.value ? '#003335' : '#ddd',
+                background: statusFilter === opt.value ? '#003335' : '#fff',
                 color: statusFilter === opt.value ? '#fff' : '#333',
+              }}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+        <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+          {PRICE_FILTER_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => setPriceFilter(opt.value)}
+              style={{
+                padding: '6px 14px', border: '1px solid', borderRadius: 20, fontSize: 13, cursor: 'pointer',
+                borderColor: priceFilter === opt.value ? '#388e3c' : '#ddd',
+                background: priceFilter === opt.value ? '#388e3c' : '#fff',
+                color: priceFilter === opt.value ? '#fff' : '#333',
               }}
             >
               {opt.label}
@@ -113,6 +145,11 @@ export default function DealsListPage() {
                   </div>
                   <div style={{ fontSize: 13, color: '#666', marginTop: 4 }}>
                     {deal.society} · {deal.locality} · {deal.city} · Flat {deal.flat_number} · {deal.bhk}
+                    {deal.expected_price_bucket && (
+                      <span style={{ marginLeft: 8, fontSize: 12, background: '#e8f5e9', color: '#2e7d32', padding: '1px 7px', borderRadius: 10, fontWeight: 600 }}>
+                        {PRICE_BUCKET_LABELS[deal.expected_price_bucket] || deal.expected_price_bucket}
+                      </span>
+                    )}
                   </div>
                   <div style={{ fontSize: 12, color: '#999', marginTop: 4, display: 'flex', gap: 12 }}>
                     <span>📞 {deal.seller_phone}</span>
