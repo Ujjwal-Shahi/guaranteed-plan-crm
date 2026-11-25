@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ─── Enums ────────────────────────────────────────────────────────────────────
+// ─── Enums ────────────────────────────────────────────────────────────────────────────────────────────
 
 enum LeadSegment {
   GP_SOCIETY      // GP | Society
@@ -70,6 +70,9 @@ enum EventType {
   REFUND_DENIED
   REFUND_INITIATED
   REFUND_CREDITED
+  REFUND_RECOVERY
+  REFUND_SETTLED
+  REFUND_UPDATED
   AGENT_CREATED
   AGENT_UPDATED
   AGENT_DEACTIVATED
@@ -82,7 +85,7 @@ enum EventType {
   SLA_BLOCKED
 }
 
-// ─── Core models ──────────────────────────────────────────────────────────────
+// ─── Core models ────────────────────────────────────────────────────────────────────────────────────
 
 model Agent {
   id            String      @id @default(cuid())
