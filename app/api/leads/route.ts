@@ -5,6 +5,7 @@ import { Decimal } from "@prisma/client/runtime/library";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { emitEvent } from "@/lib/events";
+import { startClock } from "@/lib/sla-clocks";
 
 const PAGE_SIZE = 25;
 
@@ -125,6 +126,15 @@ export async function POST(req: NextRequest) {
         propertyCity: typeof propertyCity === "string" ? propertyCity : undefined,
       },
     });
+
+    if (typeof promiseTatDays === "number" && promiseTatDays > 0) {
+      await startClock(tx, {
+        leadId: created.id,
+        clockType: "OB",
+        startedAt: created.createdAt,
+        budgetDays: promiseTatDays,
+      });
+    }
 
     await emitEvent(tx, {
       leadId: created.id,

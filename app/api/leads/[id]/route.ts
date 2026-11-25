@@ -5,6 +5,7 @@ import { Decimal } from "@prisma/client/runtime/library";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { emitEvent } from "@/lib/events";
+import { advanceClocks } from "@/lib/sla-clocks";
 
 export async function GET(
   _req: NextRequest,
@@ -115,7 +116,11 @@ export async function PATCH(
 
   for (const field of PATCHABLE_STAGE_DATES) {
     if (field in body) {
-      updateData[field] = body[field] != null ? new Date(body[field] as string) : null;
+      const value = body[field] != null ? new Date(body[field] as string) : null;
+      if (value && isNaN(value.getTime())) {
+        return NextResponse.json({ error: `${field} is not a valid date` }, { status: 400 });
+      }
+      updateData[field] = value;
       changedFields.push(field);
     }
   }
@@ -150,6 +155,14 @@ export async function PATCH(
       where: { id: params.id },
       data: updateData,
     });
+
+    const previous = lead as unknown as Record<string, Date | null>;
+    for (const field of PATCHABLE_STAGE_DATES) {
+      const value = updateData[field];
+      if (value instanceof Date && !previous[field]) {
+        await advanceClocks(tx, params.id, field, value);
+      }
+    }
 
     await emitEvent(tx, {
       leadId: params.id,
