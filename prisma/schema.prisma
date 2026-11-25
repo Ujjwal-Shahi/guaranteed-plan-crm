@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// ─── Enums ────────────────────────────────────────────────────────────────────────────────────────────
+// ─── Enums ───
 
 enum LeadSegment {
   GP_SOCIETY      // GP | Society
@@ -85,7 +85,7 @@ enum EventType {
   SLA_BLOCKED
 }
 
-// ─── Core models ────────────────────────────────────────────────────────────────────────────────────
+// ─── Core models ───
 
 model Agent {
   id            String      @id @default(cuid())
@@ -284,4 +284,13 @@ model Event {
   @@index([actorId])
   @@index([eventType])
   @@index([occurredAt])
+}
+
+// Job state for the Sheets mirror: lets the job skip tabs whose content has not changed.
+// Never read from the sheet itself.
+model MirrorState {
+  key         String   @id // e.g. "SOCIETY:Leads"
+  contentHash String
+  rowCount    Int
+  syncedAt    DateTime
 }
