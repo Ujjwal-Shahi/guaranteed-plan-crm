@@ -6,6 +6,7 @@ import { EventType } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { emitEvent } from "@/lib/events";
 import { computeSlaStatus } from "@/lib/sla";
+import { runLeaveSync } from "./leave-sync";
 
 export async function runSlaEngine(now = new Date()) {
   const openClocks = await prisma.slaClock.findMany({
@@ -43,7 +44,8 @@ export async function runSlaEngine(now = new Date()) {
 }
 
 if (require.main === module) {
-  runSlaEngine()
+  runLeaveSync()
+    .then(() => runSlaEngine())
     .then((r) => console.log(`[sla-engine] processed=${r.processed} changed=${r.changed}`))
     .catch((err) => {
       console.error("[sla-engine] Fatal error:", err instanceof Error ? err.message : "unknown");

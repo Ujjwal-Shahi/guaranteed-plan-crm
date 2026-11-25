@@ -22,6 +22,17 @@ async function main() {
   });
 
   console.log(`[seed] System agent: ${systemAgent.id}`);
+
+  // First real admin, so someone can sign in and add the rest of the team from /manpower
+  const adminEmail = process.env.SEED_ADMIN_EMAIL?.trim().toLowerCase();
+  if (adminEmail) {
+    const admin = await prisma.agent.upsert({
+      where: { email: adminEmail },
+      update: {},
+      create: { name: adminEmail.split("@")[0], email: adminEmail, team: "ops", role: "admin" },
+    });
+    console.log(`[seed] Admin agent: ${admin.id}`);
+  }
   console.log("[seed] Done. Add leads_seed.json import in M7.");
 }
 
