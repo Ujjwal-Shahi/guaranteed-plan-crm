@@ -49,10 +49,10 @@ export default function LoginPage() {
   return (
     <div style={{
       minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: 'linear-gradient(135deg, #1a237e 0%, #283593 100%)',
+      background: 'linear-gradient(135deg, #003335 0%, #005a5e 100%)',
     }}>
       <div style={{ background: '#fff', borderRadius: 12, padding: 40, width: 400, boxShadow: '0 8px 32px rgba(0,0,0,0.2)' }}>
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: '#1a237e', marginBottom: 4 }}>Guaranteed Plan CRM</h1>
+        <h1 style={{ fontSize: 22, fontWeight: 700, color: '#003335', marginBottom: 4 }}>The Pause CRM</h1>
         <p style={{ color: '#666', fontSize: 14, marginBottom: 28 }}>NoBroker Resale Deal Flow</p>
 
         <form onSubmit={handleLogin}>
@@ -75,7 +75,7 @@ export default function LoginPage() {
           {error && <div style={{ color: '#c62828', fontSize: 13, marginBottom: 12 }}>{error}</div>}
           <button
             type="submit" disabled={loading}
-            style={{ width: '100%', padding: '11px 0', background: '#1a237e', color: '#fff', border: 'none', borderRadius: 6, fontSize: 15, fontWeight: 600, cursor: 'pointer', opacity: loading ? 0.7 : 1 }}
+            style={{ width: '100%', padding: '11px 0', background: '#FE7541', color: '#fff', border: 'none', borderRadius: 6, fontSize: 15, fontWeight: 600, cursor: 'pointer', opacity: loading ? 0.7 : 1 }}
           >
             {loading ? 'Signing in…' : 'Sign in'}
           </button>

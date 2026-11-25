@@ -34,8 +34,8 @@ function Rating({ value, onChange }: { value: number; onChange: (v: number) => v
       {[1, 2, 3, 4, 5].map((n) => (
         <button key={n} type="button" onClick={() => onChange(n)}
           style={{ width: 36, height: 36, borderRadius: 6, border: '1px solid', cursor: 'pointer', fontWeight: 700, fontSize: 15,
-            borderColor: value === n ? '#1a237e' : '#ddd',
-            background: value === n ? '#1a237e' : '#fff',
+            borderColor: value === n ? '#003335' : '#ddd',
+            background: value === n ? '#003335' : '#fff',
             color: value === n ? '#fff' : '#555',
           }}>
           {n}
@@ -141,9 +141,9 @@ export default function ASMVisitForm({ deal, visit, onSubmitted }: { deal: Deal;
     <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
       {options.map((o) => (
         <label key={o.value} style={{ display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', fontSize: 14, padding: '6px 14px', border: '1px solid', borderRadius: 20,
-          borderColor: (form[key] as string) === o.value ? '#1a237e' : '#ddd',
-          background: (form[key] as string) === o.value ? '#e8eaf6' : '#fff',
-          color: (form[key] as string) === o.value ? '#1a237e' : '#555',
+          borderColor: (form[key] as string) === o.value ? '#003335' : '#ddd',
+          background: (form[key] as string) === o.value ? '#e0f5f6' : '#fff',
+          color: (form[key] as string) === o.value ? '#003335' : '#555',
         }}>
           <input type="radio" name={key as string} value={o.value} checked={(form[key] as string) === o.value}
             onChange={() => setForm((f) => ({ ...f, [key]: o.value }))} style={{ display: 'none' }} />
@@ -155,7 +155,7 @@ export default function ASMVisitForm({ deal, visit, onSubmitted }: { deal: Deal;
 
   return (
     <form onSubmit={handleSubmit} style={{ background: '#fff', borderRadius: 10, padding: 24, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
-      <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 20, color: '#1a237e' }}>ASM Visit Form</h3>
+      <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 20, color: '#003335' }}>ASM Visit Form</h3>
 
       <Section title="Condition">
         <Field label="Overall Rating (1 = poor, 5 = excellent)" required>
@@ -294,7 +294,7 @@ export default function ASMVisitForm({ deal, visit, onSubmitted }: { deal: Deal;
 
       <button
         type="submit" disabled={submitting}
-        style={{ padding: '11px 32px', background: '#1a237e', color: '#fff', border: 'none', borderRadius: 6, fontSize: 15, fontWeight: 600, cursor: 'pointer', opacity: submitting ? 0.7 : 1 }}
+        style={{ padding: '11px 32px', background: '#FE7541', color: '#fff', border: 'none', borderRadius: 6, fontSize: 15, fontWeight: 600, cursor: 'pointer', opacity: submitting ? 0.7 : 1 }}
       >
         {submitting ? 'Submitting…' : 'Submit Visit Form'}
       </button>

@@ -40,9 +40,9 @@ export default function ASMMappingPage() {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: '#1a237e' }}>ASM Mapping</h1>
+        <h1 style={{ fontSize: 22, fontWeight: 700, color: '#003335' }}>ASM Mapping</h1>
         <button onClick={() => setShowForm(!showForm)}
-          style={{ padding: '8px 20px', background: '#1a237e', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600 }}>
+          style={{ padding: '8px 20px', background: '#FE7541', color: '#fff', border: 'none', borderRadius: 6, cursor: 'pointer', fontWeight: 600 }}>
           {showForm ? 'Cancel' : '+ Add Mapping'}
         </button>
       </div>
@@ -69,7 +69,7 @@ export default function ASMMappingPage() {
               </select></div>
           </div>
           <button type="submit" disabled={saving}
-            style={{ marginTop: 16, padding: '9px 24px', background: '#1a237e', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600, cursor: 'pointer', opacity: saving ? 0.7 : 1 }}>
+            style={{ marginTop: 16, padding: '9px 24px', background: '#FE7541', color: '#fff', border: 'none', borderRadius: 6, fontWeight: 600, cursor: 'pointer', opacity: saving ? 0.7 : 1 }}>
             {saving ? 'Saving…' : 'Save Mapping'}
           </button>
         </form>

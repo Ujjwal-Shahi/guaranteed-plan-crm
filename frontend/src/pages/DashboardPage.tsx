@@ -22,7 +22,7 @@ const STATUS_COLORS: Record<string, string> = {
 function StatCard({ value, label, color }: { value: number | string; label: string; color?: string }) {
   return (
     <div style={{ background: '#fff', borderRadius: 10, padding: '20px 24px', boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
-      <div style={{ fontSize: 32, fontWeight: 800, color: color || '#1a237e' }}>{value}</div>
+      <div style={{ fontSize: 32, fontWeight: 800, color: color || '#003335' }}>{value}</div>
       <div style={{ fontSize: 13, color: '#666', marginTop: 4 }}>{label}</div>
     </div>
   );
@@ -61,7 +61,7 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <h1 style={{ fontSize: 22, fontWeight: 700, color: '#1a237e', marginBottom: 20 }}>Dashboard</h1>
+      <h1 style={{ fontSize: 22, fontWeight: 700, color: '#003335', marginBottom: 20 }}>Dashboard</h1>
 
       {/* Summary cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 12, marginBottom: 24 }}>

@@ -48,6 +48,7 @@ class DealCreate(BaseModel):
     occupancy: Optional[str] = None  # self, tenant, vacant
     visit_slots: Optional[List[str]] = []
     agent1_notes: Optional[str] = None
+    expected_price_bucket: Optional[str] = None  # below_50l, 50l_1cr, 1cr_2cr, 2cr_3cr, 3cr_4cr, above_4cr
 
 
 class DealOut(BaseModel):
@@ -69,6 +70,7 @@ class DealOut(BaseModel):
     asm_id: Optional[str]
     agent2_id: Optional[str]
     duplicate_of: Optional[str]
+    expected_price_bucket: Optional[str]
     created_at: datetime
     updated_at: datetime
     agent1: Optional[UserOut] = None

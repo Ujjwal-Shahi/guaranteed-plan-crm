@@ -24,13 +24,13 @@ export default function UsersPage() {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: '#1a237e' }}>Users</h1>
+        <h1 style={{ fontSize: 22, fontWeight: 700, color: '#003335' }}>Users</h1>
         <div style={{ display: 'flex', gap: 6 }}>
           {ROLES.map((r) => (
             <button key={r} onClick={() => setRoleFilter(r)}
               style={{ padding: '5px 12px', border: '1px solid', borderRadius: 20, fontSize: 12, cursor: 'pointer',
-                borderColor: roleFilter === r ? '#1a237e' : '#ddd',
-                background: roleFilter === r ? '#1a237e' : '#fff',
+                borderColor: roleFilter === r ? '#003335' : '#ddd',
+                background: roleFilter === r ? '#003335' : '#fff',
                 color: roleFilter === r ? '#fff' : '#555',
               }}>
               {r ? ROLE_LABELS[r] : 'All'}
@@ -60,7 +60,7 @@ export default function UsersPage() {
                     <td style={{ padding: '12px 16px', fontWeight: 500 }}>{u.name}</td>
                     <td style={{ padding: '12px 16px', color: '#666' }}>{u.email}</td>
                     <td style={{ padding: '12px 16px' }}>
-                      <span style={{ fontSize: 12, background: '#e8eaf6', color: '#1a237e', padding: '2px 10px', borderRadius: 12, fontWeight: 600 }}>
+                      <span style={{ fontSize: 12, background: '#e0f5f6', color: '#003335', padding: '2px 10px', borderRadius: 12, fontWeight: 600 }}>
                         {ROLE_LABELS[u.role] || u.role}
                       </span>
                     </td>

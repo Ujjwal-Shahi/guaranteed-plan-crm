@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --accent: #3D4FD6;
+  --foreground: #111827;
+  --background: #f9fafb;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+/* Status pill colours */
+.pill-on-track  { @apply bg-green-100 text-green-800; }
+.pill-due-soon  { @apply bg-amber-100 text-amber-800; }
+.pill-overdue   { @apply bg-red-100 text-red-800; }
+.pill-blocked   { @apply bg-purple-100 text-purple-800; }
+.pill-done      { @apply bg-gray-100 text-gray-600; }
