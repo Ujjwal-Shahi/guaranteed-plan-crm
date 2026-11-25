@@ -1,45 +1,53 @@
 /**
  * SLA engine — runs every 5 minutes via Cloud Scheduler.
- * Recomputes status on all open SlaClocks and flips leads to OVERDUE/BLOCKED.
- * Idempotent: safe to re-run at any time.
+ * Recomputes status on open SlaClocks. Never writes dueAt. Idempotent.
  */
+import { EventType } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { workingDaysBetween, DUE_SOON_THRESHOLD } from "@/lib/sla";
-import type { SlaStatus } from "@prisma/client";
+import { emitEvent } from "@/lib/events";
+import { computeSlaStatus } from "@/lib/sla";
 
-async function run() {
-  const now = new Date();
+export async function runSlaEngine(now = new Date()) {
   const openClocks = await prisma.slaClock.findMany({
     where: {
       completedAt: null,
       deletedAt: null,
+      lead: { deletedAt: null, isActive: true, status: "ACTIVE" },
     },
+    include: { lead: { select: { id: true, agentId: true } } },
   });
 
-  console.log(`[sla-engine] Processing ${openClocks.length} open clocks`);
-
+  let changed = 0;
   for (const clock of openClocks) {
-    let newStatus: SlaStatus;
+    const next = computeSlaStatus(clock, now);
+    if (next === clock.status) continue;
 
-    if (clock.dueAt <= now) {
-      newStatus = clock.blockedBy ? "BLOCKED" : "OVERDUE";
-    } else {
-      const daysLeft = workingDaysBetween(now, clock.dueAt);
-      newStatus = daysLeft <= DUE_SOON_THRESHOLD ? "DUE_SOON" : "ON_TRACK";
-    }
+    await prisma.$transaction(async (tx) => {
+      await tx.slaClock.update({ where: { id: clock.id }, data: { status: next } });
 
-    if (newStatus !== clock.status) {
-      await prisma.slaClock.update({
-        where: { id: clock.id },
-        data: { status: newStatus },
-      });
-    }
+      const eventType =
+        next === "OVERDUE" ? EventType.SLA_OVERDUE : next === "BLOCKED" ? EventType.SLA_BLOCKED : null;
+      if (eventType && clock.lead.agentId) {
+        await emitEvent(tx, {
+          leadId: clock.lead.id,
+          actorId: clock.lead.agentId,
+          eventType,
+          payload: { clockType: clock.clockType, from: clock.status, to: next },
+        });
+      }
+    });
+    changed++;
   }
 
-  console.log(`[sla-engine] Done at ${now.toISOString()}`);
+  return { processed: openClocks.length, changed };
 }
 
-run().catch((err) => {
-  console.error("[sla-engine] Fatal error:", err);
-  process.exit(1);
-});
+if (require.main === module) {
+  runSlaEngine()
+    .then((r) => console.log(`[sla-engine] processed=${r.processed} changed=${r.changed}`))
+    .catch((err) => {
+      console.error("[sla-engine] Fatal error:", err instanceof Error ? err.message : "unknown");
+      process.exit(1);
+    })
+    .finally(() => prisma.$disconnect());
+}

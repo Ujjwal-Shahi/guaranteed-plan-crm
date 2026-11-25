@@ -67,3 +67,28 @@ export const SLA_BUDGETS: Record<string, number> = {
 
 /** Working-days before dueAt when status flips to DUE_SOON */
 export const DUE_SOON_THRESHOLD = 1;
+
+/** Pure status computation — shared by the SLA engine and tests. Never touches dueAt. */
+export function computeSlaStatus(
+  clock: { dueAt: Date; completedAt: Date | null; blockedBy: string | null },
+  now: Date
+): "ON_TRACK" | "DUE_SOON" | "OVERDUE" | "BLOCKED" | "DONE" {
+  if (clock.completedAt) return "DONE";
+  if (clock.dueAt <= now) return clock.blockedBy ? "BLOCKED" : "OVERDUE";
+  return workingDaysBetween(now, clock.dueAt) <= DUE_SOON_THRESHOLD
+    ? "DUE_SOON"
+    : "ON_TRACK";
+}
+
+/** Lead stage date field → clock it completes, and the clock it starts next. */
+export const STAGE_CLOCKS: Record<string, { completes: string; starts?: string }> = {
+  obCompletedAt: { completes: "OB", starts: "DOCS_COLLECTION" },
+  docsCollectedAt: { completes: "DOCS_COLLECTION", starts: "DDP_PR" },
+  ddpPrDoneAt: { completes: "DDP_PR", starts: "DDP_FINAL" },
+  ddpFinalDoneAt: { completes: "DDP_FINAL", starts: "SA_DRAFT" },
+  saDraftDoneAt: { completes: "SA_DRAFT", starts: "SA_SIGNING" },
+  saSignedAt: { completes: "SA_SIGNING", starts: "LOAN_DD" },
+  loanDdReceivedAt: { completes: "LOAN_DD", starts: "SD_DRAFT" },
+  sdDraftDoneAt: { completes: "SD_DRAFT", starts: "REGISTRATION" },
+  registeredAt: { completes: "REGISTRATION" },
+};
