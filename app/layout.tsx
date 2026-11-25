@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { NavShell } from "@/components/nav/NavShell";
 
 export const metadata: Metadata = {
   title: "NoBroker Monetisation CRM",
@@ -21,7 +22,9 @@ export default function RootLayout({
           crossOrigin=""
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <NavShell>{children}</NavShell>
+      </body>
     </html>
   );
 }
