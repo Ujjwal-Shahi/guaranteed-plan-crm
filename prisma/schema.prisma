@@ -1,0 +1,284 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum LeadSegment {
+  GP_SOCIETY      // GP | Society
+  BAPS_SOCIETY    // BAPS Society
+  SSPP_POSTPAID   // Post paid
+  PLOT            // Plot
+  BMBA_BM         // BM Sheet
+  BMHV_BM_1L      // BM >1L
+}
+
+enum LeadStatus {
+  ACTIVE
+  CANCELLED
+  REGISTERED
+}
+
+enum SlaStatus {
+  ON_TRACK
+  DUE_SOON
+  OVERDUE
+  BLOCKED
+  DONE
+}
+
+enum AgentStatus {
+  ACTIVE
+  ON_LEAVE
+  EXITED
+}
+
+enum RefundStatus {
+  RAISED
+  APPROVED
+  INITIATED
+  CREDITED
+  DENIED
+  RECOVERY
+  SETTLED
+}
+
+enum EventType {
+  LEAD_CREATED
+  LEAD_UPDATED
+  LEAD_ASSIGNED
+  LEAD_CANCELLED
+  STAGE_UPDATED
+  OB_COMPLETED
+  DDP_DOCS_COLLECTED
+  DDP_PR_COMPLETED
+  DDP_FINAL_COMPLETED
+  SA_DETAILS_SHARED
+  SA_DRAFT_DONE
+  SA_SIGNED
+  LOAN_DD_RECEIVED
+  SD_DRAFT_DONE
+  REGISTERED
+  REFUND_RAISED
+  REFUND_CALLED
+  REFUND_APPROVED
+  REFUND_DENIED
+  REFUND_INITIATED
+  REFUND_CREDITED
+  AGENT_CREATED
+  AGENT_UPDATED
+  AGENT_DEACTIVATED
+  LEAVE_STARTED
+  LEAVE_ENDED
+  MAIL_LINKED
+  MAIL_REPLIED
+  NOTE_ADDED
+  SLA_OVERDUE
+  SLA_BLOCKED
+}
+
+// ─── Core models ──────────────────────────────────────────────────────────────
+
+model Agent {
+  id            String      @id @default(cuid())
+  name          String
+  email         String      @unique
+  noBrokerLogin String?     @unique
+  team          String?
+  role          String?
+  status        AgentStatus @default(ACTIVE)
+  backupAgentId String?
+  backupAgent   Agent?      @relation("AgentBackup", fields: [backupAgentId], references: [id])
+  backupFor     Agent[]     @relation("AgentBackup")
+  capacity      Int         @default(50)
+  joinedAt      DateTime    @default(now())
+  exitedAt      DateTime?
+  isActive      Boolean     @default(true)
+  deletedAt     DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  leads         Lead[]
+  leaves        AgentLeave[]
+  events        Event[]     @relation("ActorEvents")
+
+  @@index([isActive, status])
+  @@index([email])
+}
+
+model AgentLeave {
+  id          String    @id @default(cuid())
+  agentId     String
+  agent       Agent     @relation(fields: [agentId], references: [id])
+  startDate   DateTime
+  endDate     DateTime
+  backupId    String?
+  reason      String?
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([agentId])
+  @@index([startDate, endDate])
+}
+
+model Lead {
+  id              String       @id @default(cuid())
+  code            String       @unique
+  segment         LeadSegment
+  status          LeadStatus   @default(ACTIVE)
+
+  // Deal terms
+  dealValue       Decimal      @db.Decimal(14, 2)
+  pfcAmount       Decimal?     @db.Decimal(14, 2)
+  tokenAmount     Decimal?     @db.Decimal(14, 2)
+  tdsAmount       Decimal?     @db.Decimal(14, 2)
+  promiseTatDays  Int?
+
+  // Property info
+  propertyAddress String?
+  propertyCity    String?
+
+  // Parties
+  sellerName      String?
+  sellerEmail     String?
+  sellerPhone     String?
+  buyerName       String?
+  buyerEmail      String?
+  buyerPhone      String?
+
+  // Ownership
+  agentId         String?
+  agent           Agent?       @relation(fields: [agentId], references: [id])
+
+  // Pipeline stage dates
+  obCompletedAt    DateTime?
+  docsCollectedAt  DateTime?
+  ddpPrDoneAt      DateTime?
+  ddpFinalDoneAt   DateTime?
+  saDetailsSharedAt DateTime?
+  saDraftDoneAt    DateTime?
+  saSignedAt       DateTime?
+  loanSaSharedAt   DateTime?
+  loanDdReceivedAt DateTime?
+  sdDraftDoneAt    DateTime?
+  registeredAt     DateTime?
+
+  // Upsell
+  interiorPitched Boolean @default(false)
+  referralAsked   Boolean @default(false)
+
+  // Blockers
+  blockedBy   String?
+  blockedNote String?
+
+  // Ticket
+  ticketId    String?
+
+  // Flags
+  isActive    Boolean   @default(true)
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  slaClocks   SlaClock[]
+  refunds     Refund[]
+  mailThreads MailThread[]
+  events      Event[]
+
+  @@index([agentId])
+  @@index([status, isActive])
+  @@index([segment])
+  @@index([code])
+}
+
+model SlaClock {
+  id          String    @id @default(cuid())
+  leadId      String
+  lead        Lead      @relation(fields: [leadId], references: [id])
+  clockType   String
+  startedAt   DateTime
+  dueAt       DateTime  // immutable once set — never update this field
+  completedAt DateTime?
+  status      SlaStatus @default(ON_TRACK)
+  blockedBy   String?
+  blockedNote String?
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([leadId, clockType])
+  @@index([leadId])
+  @@index([status])
+  @@index([dueAt])
+}
+
+model Refund {
+  id              String       @id @default(cuid())
+  leadId          String
+  lead            Lead         @relation(fields: [leadId], references: [id])
+  status          RefundStatus @default(RAISED)
+  reason          String?
+  refundType      String?
+  bmAmount        Decimal?     @db.Decimal(14, 2)
+  holdingAmount   Decimal?     @db.Decimal(14, 2)
+  refundAmount    Decimal?     @db.Decimal(14, 2)
+  penaltyAmount   Decimal?     @db.Decimal(14, 2)
+  denialMailLoggedAt DateTime?
+  initiatedAt     DateTime?
+  creditedAt      DateTime?
+  lastCallAt      DateTime?
+  nextCallDueAt   DateTime?
+  isActive        Boolean      @default(true)
+  deletedAt       DateTime?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  events          Event[]
+
+  @@index([leadId])
+  @@index([status])
+}
+
+model MailThread {
+  id          String    @id @default(cuid())
+  leadId      String
+  lead        Lead      @relation(fields: [leadId], references: [id])
+  threadId    String?
+  threadUrl   String?
+  subject     String?
+  receivedAt  DateTime?
+  repliedAt   DateTime?
+  revertDueAt DateTime?
+  repliedById String?
+  isActive    Boolean   @default(true)
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([leadId])
+}
+
+model Event {
+  id          String    @id @default(cuid())
+  leadId      String?
+  lead        Lead?     @relation(fields: [leadId], references: [id])
+  actorId     String
+  actor       Agent     @relation("ActorEvents", fields: [actorId], references: [id])
+  eventType   EventType
+  payload     Json      @default("{}")
+  refundId    String?
+  refund      Refund?   @relation(fields: [refundId], references: [id])
+  occurredAt  DateTime
+  createdAt   DateTime  @default(now())
+
+  @@index([leadId])
+  @@index([actorId])
+  @@index([eventType])
+  @@index([occurredAt])
+}
